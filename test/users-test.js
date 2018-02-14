@@ -344,3 +344,18 @@ test('Test getting the number of users in a Realm', (t) => {
     });
   });
 });
+
+test('Test adding group membership to a user', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    t.equal(typeof client.users.groups.join, 'function', 'The client object returned should have a users function');
+
+    // Use the master realm
+    const realmName = 'master';
+    const userId = '3ff724a6-90a8-4050-9981-4a6def74870a';
+    const groupId = '5a54a050-1b9d-4cfa-bf7f-048dd0ba7135';
+
+    return t.ok(client.users.groups.join(realmName, userId, groupId), `User ${userId} joined the group ${groupId}`);
+  });
+});
